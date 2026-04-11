@@ -2,13 +2,22 @@ import os
 from supabase import create_client
 from dotenv import load_dotenv
 
+# Only load .env file locally, Railway provides vars directly
 load_dotenv()
 
+# Get variables
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY")
+
+# Debug
+print(f"SUPABASE_URL loaded: {supabase_url}")
+print(f"SUPABASE_KEY loaded: {supabase_key is not None}")
+
+if not supabase_url or not supabase_key:
+    raise ValueError("Missing SUPABASE_URL or SUPABASE_KEY environment variables")
+
 # Connect to Supabase
-supabase = create_client(
-    os.getenv("SUPABASE_URL"),
-    os.getenv("SUPABASE_KEY")
-)
+supabase = create_client(supabase_url, supabase_key)
 
 # ─────────────────────────────
 # Save a recipe to the database
