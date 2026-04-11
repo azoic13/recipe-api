@@ -1,0 +1,31 @@
+{
+  "title": "Avocado Bread",
+  "ingredients": [
+    {
+      "name": "avocado",
+      "quantity": "1",
+      "unit": ""
+    },
+    {
+      "name": "egg",
+      "quantity": "1",
+      "unit": ""
+    },
+    {
+      "name": "2% cottage cheese",
+      "quantity": "150",
+      "unit": "g"
+    },
+    {
+      "name": "everything bagel seasoning",
+      "quantity": "",
+      "unit": ""
+    }
+  ],
+  "steps": [
+    "Step 1: Combine all ingredients in a bowl",
+    "Step 2: Transfer the mixture by the spoonful onto a parchment lined baking sheet",
+    "Step 3: Bake at 400°F for 20 minutes",
+    "Step 4: Assemble as a sandwich or however you want and enjoy"
+  ]
+}
