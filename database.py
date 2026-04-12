@@ -78,3 +78,10 @@ def move_recipe_to_cookbook(recipe_id: str, cookbook_id: str = None) -> dict:
         .eq("id", recipe_id) \
         .execute()
     return result.data[0]
+def get_uncategorized_recipes() -> list:
+    result = supabase.table("recipes") \
+        .select("*") \
+        .is_("cookbook_id", "null") \
+        .order("created_at", desc=True) \
+        .execute()
+    return result.data

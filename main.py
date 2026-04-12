@@ -34,7 +34,9 @@ def home():
 # Recipes
 # ─────────────────────────────
 @app.get("/recipes")
-def list_recipes():
+def list_recipes(uncategorized_only: bool = False):
+    if uncategorized_only:
+        return get_uncategorized_recipes()
     return get_all_recipes()
 
 @app.get("/recipes/cookbook/{cookbook_id}")
