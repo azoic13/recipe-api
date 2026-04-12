@@ -124,12 +124,13 @@ def extract_recipe_from_url(url: str) -> dict:
     print(f"Content found: {caption[:100]}...")
     recipe = extract_recipe_with_ai(caption)
 
-    # Fetch photo
+    # Fetch photo using title if available, otherwise use generic food search
     if "error" not in recipe:
-        recipe["photo_url"] = get_food_photo(recipe.get("title", "food"))
+        title = recipe.get("title", "")
+        search_term = title if title else "food recipe"
+        recipe["photo_url"] = get_food_photo(search_term)
 
     return recipe
-
 
 def extract_recipe_from_text(text: str) -> dict:
     print("Extracting from pasted text...")
