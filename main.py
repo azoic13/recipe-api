@@ -4,8 +4,8 @@ from typing import Optional
 from extractor import extract_recipe_from_url, extract_recipe_from_text
 from database import (
     save_recipe, get_all_recipes, get_recipes_by_cookbook,
-    delete_recipe, get_all_cookbooks, create_cookbook, 
-    delete_cookbook, move_recipe_to_cookbook
+    delete_recipe, get_all_cookbooks, create_cookbook,
+    delete_cookbook, move_recipe_to_cookbook, get_uncategorized_recipes
 )
 
 app = FastAPI()
