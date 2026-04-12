@@ -41,3 +41,12 @@ def get_all_recipes() -> list:
         .order("created_at", desc=True) \
         .execute()
     return result.data
+# ─────────────────────────────
+# Delete a recipe by ID
+# ─────────────────────────────
+def delete_recipe(recipe_id: str) -> dict:
+    result = supabase.table("recipes") \
+        .delete() \
+        .eq("id", recipe_id) \
+        .execute()
+    return {"deleted": True}

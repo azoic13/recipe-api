@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from extractor import extract_recipe_from_url, extract_recipe_from_text
-from database import save_recipe, get_all_recipes
+from database import save_recipe, get_all_recipes, delete_recipe as supabase_delete
 
 app = FastAPI()
 
@@ -57,3 +57,11 @@ def extract_from_text(data: TextInput):
 
     saved = save_recipe(recipe)
     return saved
+
+    # ─────────────────────────────
+# Delete a recipe
+# ─────────────────────────────
+@app.delete("/recipes/{recipe_id}")
+def delete_recipe(recipe_id: str):
+    result = supabase_delete(recipe_id)
+    return result
