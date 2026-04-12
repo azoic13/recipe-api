@@ -35,6 +35,11 @@ def list_recipes():
 @app.post("/extract-from-url")
 def extract_from_url(data: UrlInput):
     recipe = extract_recipe_from_url(data.url)
+
+    # If error, return it without saving
+    if "error" in recipe:
+        return recipe
+
     saved = save_recipe(recipe, source_url=data.url)
     return saved
 
@@ -45,5 +50,10 @@ def extract_from_url(data: UrlInput):
 @app.post("/extract-from-text")
 def extract_from_text(data: TextInput):
     recipe = extract_recipe_from_text(data.text)
+
+    # If error, return it without saving
+    if "error" in recipe:
+        return recipe
+
     saved = save_recipe(recipe)
     return saved
