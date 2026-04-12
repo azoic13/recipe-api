@@ -71,3 +71,9 @@ def delete_cookbook(cookbook_id: str) -> dict:
         .eq("id", cookbook_id) \
         .execute()
     return {"deleted": True}
+def move_recipe_to_cookbook(recipe_id: str, cookbook_id: str = None) -> dict:
+    result = supabase.table("recipes") \
+        .update({"cookbook_id": cookbook_id}) \
+        .eq("id", recipe_id) \
+        .execute()
+    return result.data[0]

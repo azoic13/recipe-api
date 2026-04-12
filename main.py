@@ -3,8 +3,9 @@ from pydantic import BaseModel
 from typing import Optional
 from extractor import extract_recipe_from_url, extract_recipe_from_text
 from database import (
-    save_recipe, get_all_recipes, get_recipes_by_cookbook, 
-    delete_recipe, get_all_cookbooks, create_cookbook, delete_cookbook
+    save_recipe, get_all_recipes, get_recipes_by_cookbook,
+    delete_recipe, get_all_cookbooks, create_cookbook, 
+    delete_cookbook, move_recipe_to_cookbook
 )
 
 app = FastAPI()
@@ -73,3 +74,9 @@ def add_cookbook(data: CookbookInput):
 @app.delete("/cookbooks/{cookbook_id}")
 def remove_cookbook(cookbook_id: str):
     return delete_cookbook(cookbook_id)
+class MoveRecipeInput(BaseModel):
+    cookbook_id: Optional[str] = None
+
+@app.patch("/recipes/{recipe_id}/move")
+def move_recipe(recipe_id: str, data: MoveRecipeInput):
+    return move_recipe_to_cookbook(recipe_id, data.cookbook_id)
