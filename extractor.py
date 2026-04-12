@@ -2,6 +2,27 @@ import yt_dlp
 import anthropic
 import json
 import os
+import requests
+
+def get_food_photo(title: str) -> str:
+    try:
+        access_key = os.environ.get("UNSPLASH_ACCESS_KEY")
+        response = requests.get(
+            "https://api.unsplash.com/search/photos",
+            params={
+                "query": title + " food recipe",
+                "per_page": 1,
+                "orientation": "landscape"
+            },
+            headers={"Authorization": f"Client-ID {access_key}"}
+        )
+        data = response.json()
+        if data["results"]:
+            return data["results"][0]["urls"]["regular"]
+        return ""
+    except Exception as e:
+        print(f"Photo fetch error: {e}")
+        return ""
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -102,13 +123,20 @@ def extract_recipe_from_url(url: str) -> dict:
 
     print(f"Content found: {caption[:100]}...")
     recipe = extract_recipe_with_ai(caption)
+
+    # Fetch photo
+    if "error" not in recipe:
+        recipe["photo_url"] = get_food_photo(recipe.get("title", "food"))
+
     return recipe
 
 
-# ─────────────────────────────────────
-# STEP D: Extract from pasted text
-# ─────────────────────────────────────
 def extract_recipe_from_text(text: str) -> dict:
     print("Extracting from pasted text...")
     recipe = extract_recipe_with_ai(text)
+
+    # Fetch photo
+    if "error" not in recipe:
+        recipe["photo_url"] = get_food_photo(recipe.get("title", "food"))
+
     return recipe
