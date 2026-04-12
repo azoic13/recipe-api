@@ -20,7 +20,7 @@ def save_recipe(recipe: dict, source_url: str = None, cookbook_id: str = None) -
         "ingredients": recipe["ingredients"],
         "steps": recipe["steps"],
         "source_url": source_url or "",
-        "cookbook_id": cookbook_id,
+        "cookbook_id": cookbook_id if cookbook_id else None,
         "photo_url": recipe.get("photo_url", "")
     }
     result = supabase.table("recipes").insert(data).execute()
