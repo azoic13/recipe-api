@@ -85,3 +85,40 @@ def get_uncategorized_recipes() -> list:
         .order("created_at", desc=True) \
         .execute()
     return result.data
+    # ─────────────────────────────
+# GROCERY LIST
+# ─────────────────────────────
+
+def get_grocery_list() -> list:
+    result = supabase.table("grocery_list") \
+        .select("*") \
+        .order("created_at", desc=False) \
+        .execute()
+    return result.data
+
+def add_to_grocery_list(items: list) -> list:
+    result = supabase.table("grocery_list") \
+        .insert(items) \
+        .execute()
+    return result.data
+
+def toggle_grocery_item(item_id: str, checked: bool) -> dict:
+    result = supabase.table("grocery_list") \
+        .update({"checked": checked}) \
+        .eq("id", item_id) \
+        .execute()
+    return result.data[0]
+
+def delete_grocery_item(item_id: str) -> dict:
+    supabase.table("grocery_list") \
+        .delete() \
+        .eq("id", item_id) \
+        .execute()
+    return {"deleted": True}
+
+def clear_checked_items() -> dict:
+    supabase.table("grocery_list") \
+        .delete() \
+        .eq("checked", True) \
+        .execute()
+    return {"cleared": True}

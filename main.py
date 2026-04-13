@@ -7,6 +7,13 @@ from database import (
     delete_recipe, get_all_cookbooks, create_cookbook,
     delete_cookbook, move_recipe_to_cookbook, get_uncategorized_recipes
 )
+from database import (
+    save_recipe, get_all_recipes, get_recipes_by_cookbook,
+    delete_recipe, get_all_cookbooks, create_cookbook,
+    delete_cookbook, move_recipe_to_cookbook, get_uncategorized_recipes,
+    get_grocery_list, add_to_grocery_list, toggle_grocery_item,
+    delete_grocery_item, clear_checked_items
+)
 
 app = FastAPI()
 
@@ -82,3 +89,39 @@ class MoveRecipeInput(BaseModel):
 @app.patch("/recipes/{recipe_id}/move")
 def move_recipe(recipe_id: str, data: MoveRecipeInput):
     return move_recipe_to_cookbook(recipe_id, data.cookbook_id)
+class GroceryItemInput(BaseModel):
+    name: str
+    quantity: Optional[str] = ""
+    unit: Optional[str] = ""
+    recipe_id: Optional[str] = None
+
+class GroceryItemsInput(BaseModel):
+    items: list[GroceryItemInput]
+
+class ToggleInput(BaseModel):
+    checked: bool
+
+
+# ─────────────────────────────
+# GROCERY LIST
+# ─────────────────────────────
+@app.get("/grocery")
+def list_grocery():
+    return get_grocery_list()
+
+@app.post("/grocery")
+def add_grocery(data: GroceryItemsInput):
+    items = [item.dict() for item in data.items]
+    return add_to_grocery_list(items)
+
+@app.patch("/grocery/{item_id}")
+def toggle_grocery(item_id: str, data: ToggleInput):
+    return toggle_grocery_item(item_id, data.checked)
+
+@app.delete("/grocery/{item_id}")
+def remove_grocery_item(item_id: str):
+    return delete_grocery_item(item_id)
+
+@app.delete("/grocery")
+def clear_checked():
+    return clear_checked_items()
